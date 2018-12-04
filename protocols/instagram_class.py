@@ -4,14 +4,11 @@ from threading import Thread, Event
 from protocol_class import protocol
 from time import sleep
 
-user_name="mario_teste"
-password="blabla123"
-
-
 class instagram(Thread):
-    def __init__(self):
+    def __init__(self,username,password):
         super().__init__()
-        self._iqueue = Queue()
+        self._credentials = [username,password]
+        self._iqueue = Queue()  
         self._oqueue = None
         self._qaux = None
         self._alive = Event()
@@ -23,7 +20,7 @@ class instagram(Thread):
             username= user_name1, password=password1)
         return client
 
-    def process_msg(self,data):
+    def process_msg(self,data): 
         if(data['field']=="comments"):
             id = data['value']['id']
             msg_text = data['value']['text']
@@ -42,7 +39,7 @@ class instagram(Thread):
         self._client.post_comment(msg_obj.id,msg_obj.text)
     
     def run(self):
-        self._client = self.auth(user_name,password)
+        self._client = self.auth(self._credentials[0],self._credentials[1])
         self._alive.set()
         while self._alive:
             sleep(2)

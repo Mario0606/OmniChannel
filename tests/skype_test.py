@@ -27,4 +27,4 @@ skype_server.loop()
 #ch.sendMsg('content') # plain-text message
 #ch.sendFile(open("song.mp3", "rb"), "song.mp3") # file upload
 #ch.sendContact(sk.contacts["daisy.5"]) # contact sharing
-sk.getMsgs()
+#sk.getMsgs()

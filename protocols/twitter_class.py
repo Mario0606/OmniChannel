@@ -76,7 +76,7 @@ class twitter(Thread,listener):
         if(msg.type == "Comment"):
             self.send_comment(msg)
         elif(msg.type == "DirectMessage"):
-            self.send_direct_message()
+            self.send_direct_message(msg.id,msg.text)
 
     def run(self):
         self.tserver()

@@ -88,7 +88,6 @@ class gmail(Thread):
         send_mail(self._service,"me",message)
 
     def run(self):
-        print("blabla")
         self.auth()
         self._alive.set()
         while self._alive:

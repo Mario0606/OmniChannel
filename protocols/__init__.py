@@ -12,6 +12,7 @@ from gmail_class import gmail
 from console_class import console
 from twitter_class import twitter
 from instagram_class import instagram
+from skype_class import skype
 
 from flask import Flask, request,render_template
 import json
@@ -20,18 +21,24 @@ import os
 
 #data of Twitter access 
 arq = open('/home/iqnus/passwords.json', 'rb')
-texto = arq.read()
-texto = json.loads(texto)
-ckey = texto['twitter']['ckey']
-csecret = texto['twitter']['csecret']
-atoken = texto['twitter']['atoken']
-asecret = texto['twitter']['asecret']
-print(atoken)
+text = arq.read()
+text = json.loads(text)
+ckey = text['twitter']['ckey']
+csecret = text['twitter']['csecret']
+atoken = text['twitter']['atoken']
+asecret = text['twitter']['asecret']
+
 auth = OAuthHandler(ckey, csecret)
 auth.set_access_token(atoken, asecret)
 #data of Facebook access
-page_token = texto['facebook']['page_token']
+page_token = text['facebook']['page_token']
+ #data of Skype access
+username = text['skype']['username']
+password = text['skype']['password']
 
+#data of Instagram access
+usernameI = text['instagram']['username']
+passwordI = text['instagram']['password']
 
 app = Flask(__name__)
 qaux_F = Queue()
@@ -107,13 +114,15 @@ if __name__=='__main__':
     twitter1 = twitter(auth)
     facebook1 = facebook(page_token)
     gmail1 = gmail() 
-    instagram1 = instagram()
+    instagram1 = instagram(usernameI,passwordI)
     console1 = console()
+    skype1 = skype(username,password)
 
     console1._oqueue_t, twitter1._oqueue = twitter1._iqueue, console1._iqueue
     console1._oqueue_f, facebook1._oqueue = facebook1._iqueue, console1._iqueue
     console1._oqueue_g, gmail1._oqueue = gmail1._iqueue,console1._iqueue
     console1._oqueue_g, instagram1._oqueue = instagram1._iqueue,console1._iqueue
+    console1._oqueue_s, skype1._oqueue = skype1._iqueue,console1._iqueue
 
     facebook1._qaux = qaux_F
     gmail1._qaux = qaux_G
@@ -123,6 +132,7 @@ if __name__=='__main__':
     facebook1.start()
     twitter1.start()
     instagram1.start()
+    skype1.start()
     console1.start()
 
     app.run(debug=True)

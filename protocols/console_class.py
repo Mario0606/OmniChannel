@@ -11,6 +11,7 @@ class console(Thread):
         self._oqueue_t = None
         self._oqueue_g = None
         self._oqueue_i = None
+        self._oqueue_s = None
         self._alive = Event()
 
     def process(self, msg):
@@ -24,6 +25,8 @@ class console(Thread):
             pattern_object = protocol("Gmail",msg.type,msg.id,msg.username,text,"")
         elif(msg.plataform == "Instagram"):
             pattern_object = protocol("Instagram",msg.type,msg.id,msg.username,text,"")
+        elif(msg.plataform == "Skype"):
+            pattern_object = protocol("Skype",msg.type,msg.id,msg.username,text,"")
         return pattern_object
 
     def run(self):
@@ -41,4 +44,6 @@ class console(Thread):
                     self._oqueue_g.put_nowait(pmsg)
                 elif(pmsg.plataform == 'Instagram'):
                     self._oqueue_i.put_nowait(pmsg)
+                elif(pmsg.plataform == 'Skype'):
+                    self._oqueue_s.put_nowait(pmsg)
                 
