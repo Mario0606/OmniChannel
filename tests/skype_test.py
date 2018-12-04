@@ -1,5 +1,5 @@
 from skpy import Skype
-from skpy import SkypeEventLoop, SkypeNewMessageEvent
+from skpy import SkypeEventLoop, SkypeNewMessageEvent, SkypeChatUpdateEvent
 import json
 
 arq = open('/home/iqnus/passwords.json', 'rb')
@@ -12,12 +12,12 @@ class SkypePing(SkypeEventLoop):
     def __init__(self):
         super(SkypePing, self).__init__(username, password)
     def onEvent(self, event):
-        if isinstance(event, SkypeNewMessageEvent) \
-          and not event.msg.userId == self.userId \
-          and "ping" in event.msg.content:
-            event.msg.chat.sendMsg("Pong!")
-        print(event.msg.content)
-
+        print(event)
+        if isinstance(event, SkypeNewMessageEvent):
+            print(event)
+        if isinstance(event, SkypeChatUpdateEvent):
+            print(event)
+        
 
 skype_server = SkypePing()
 skype_server.loop()
