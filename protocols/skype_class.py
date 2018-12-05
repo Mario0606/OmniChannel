@@ -4,7 +4,7 @@ from queue import Queue
 from threading import Thread, Event
 import requests
 from time import sleep
-from skpy import SkypeEventLoop, SkypeNewMessageEvent, SkypeChatUpdateEvent,SkypeMsg,SkypeChat
+from skpy import SkypeEventLoop, SkypeNewMessageEvent, SkypeChatUpdateEvent,SkypeMsg, SkypeChat
 from dependences.skype_listener_class import SkypePing
 import datetime
 
@@ -17,18 +17,15 @@ class skype(Thread):
         self._alive = Event()
 
     def process_msg(self,data):     
-        print(data)
         id = data[0]
         user_name = data[1]
         text = data[2]
-        skype_object = protocol("Skype","DirectMessage",id,user_name,text,"") 
-        print(skype_object)
+        reference = data[3]
+        skype_object = protocol("Skype","DirectMessage",id,user_name,text,reference) 
         return skype_object
     
     def send_direct_message(self,msg_obj):
-        msg = SkypeMsg(time=datetime.datetime,SkypeUser="me",)
-        #content = SkypeChat.id
-
+        msg_obj.reference.sendMsg(msg_obj.text)
 
     def sserver(self):
         def _init_server():

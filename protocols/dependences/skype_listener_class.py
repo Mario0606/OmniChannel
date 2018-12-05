@@ -1,4 +1,4 @@
-from skpy import SkypeEventLoop, SkypeNewMessageEvent, SkypeChatUpdateEvent
+from skpy import SkypeEventLoop, SkypeNewMessageEvent, SkypeChatUpdateEvent,SkypeSingleChat
 from queue import Queue
 
 class SkypePing(SkypeEventLoop):
@@ -7,11 +7,9 @@ class SkypePing(SkypeEventLoop):
         self._queue = Queue()
 
     def onEvent(self, event):
-        #print(event)
         if isinstance(event, SkypeNewMessageEvent)and not event.msg.userId == self.userId:
-            print(event.msg.chat.user)
             user_name = event.msg.chat.user.name
             chatId = event.msg.chat.user.id
             text = event.msg.content
-            self._queue.put((chatId, user_name, text))
+            self._queue.put((chatId, user_name, text,event.msg.chat))
         

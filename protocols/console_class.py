@@ -18,15 +18,15 @@ class console(Thread):
         print(msg.plataform,msg.username,msg.text)
         text = input()
         if(msg.plataform == "Facebook"):
-            pattern_object = protocol("Facebook",msg.type,msg.id,msg.username,text,"")
+            pattern_object = protocol("Facebook",msg.type,msg.id,msg.username,text,msg.reference)
         elif(msg.plataform == "Twitter"):
-            pattern_object = protocol("Twitter",msg.type,msg.id,msg.username,text,"")
+            pattern_object = protocol("Twitter",msg.type,msg.id,msg.username,text,msg.reference)
         elif(msg.plataform=="Gmail"):
-            pattern_object = protocol("Gmail",msg.type,msg.id,msg.username,text,"")
+            pattern_object = protocol("Gmail",msg.type,msg.id,msg.username,text,msg.reference)
         elif(msg.plataform == "Instagram"):
-            pattern_object = protocol("Instagram",msg.type,msg.id,msg.username,text,"")
+            pattern_object = protocol("Instagram",msg.type,msg.id,msg.username,text,msg.reference)
         elif(msg.plataform == "Skype"):
-            pattern_object = protocol("Skype",msg.type,msg.id,msg.username,text,"")
+            pattern_object = protocol("Skype",msg.type,msg.id,msg.username,text,msg.reference)
         return pattern_object
 
     def run(self):
