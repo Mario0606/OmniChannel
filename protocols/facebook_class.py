@@ -9,19 +9,12 @@ from time import sleep
 import os
 import facebook as fc
 
-token = "EAAHsDbbXDc8BAO9hHBUDfVR1iUDZCfZBXOqoMtZA2VykXWTZA2D3UiDFkeedxteZBsA0pZASzlqe2znIdVrercbZB55xmrKWqUs6Svp6nCntURBMemhYtAjDoFHMPxWgEnH5q7XCoWOQyfoqMXC7nvooZAHby50JL8lZBtZAOV7kqmBnayEEVhrzel"
 pageID = '2153856384731880'    #Page ID 
 
-graph = fc.GraphAPI(access_token=token, version="3.0")
-qaux = Queue()
-
 class facebook(Thread):
-    def auth(self):
-        app_id = "541018622987727"
-        canvas_url = "https://ddff9f6f.ngrok.io/auth-facebook"
-        perms = ["manage_pages","publish_pages"]
-        fb_login_url = graph.get_auth_url(app_id, canvas_url, perms)
-        print(fb_login_url)
+    '''Facebook is a class that inherits from Thread because
+
+    '''    
 
     def __init__(self,page_token):
         super().__init__()
@@ -29,7 +22,15 @@ class facebook(Thread):
         self._oqueue = None
         self._qaux = None
         self._alive = Event()
+        self._graph = fc.GraphAPI(access_token=page_token, version="3.0")
         self._page_token = page_token
+    
+    def auth(self):
+        app_id = "541018622987727"
+        canvas_url = "https://ddff9f6f.ngrok.io/auth-facebook"
+        perms = ["manage_pages","publish_pages"]
+        fb_login_url = self._graph.get_auth_url(app_id, canvas_url, perms)
+        print(fb_login_url)
 
     def process_msg(self,json):
         if (json!= None and json != protocol):
@@ -46,7 +47,7 @@ class facebook(Thread):
                 else:            
                     text = json['entry'][0]['messaging'][0]['message']['text']
                     ID = json['entry'][0]['messaging'][0]['sender']['id']
-                    info_user = graph.get_object(ID)
+                    info_user = self._graph.get_object(ID)
                     username = info_user['first_name']
                     facebook_object = protocol("Facebook","DirectMessage",ID,username,text,"")
                 return facebook_object
@@ -64,7 +65,7 @@ class facebook(Thread):
 
     def send(self,msg_obj):
         if(msg_obj.type == "DirectMessage"):
-            self.send_dm(msg_obj, token)
+            self.send_dm(msg_obj, self._page_token)
 
         elif(msg_obj.type == "Comment"):
             self.comment_status(msg_obj)

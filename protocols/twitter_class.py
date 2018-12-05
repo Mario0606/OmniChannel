@@ -18,6 +18,7 @@ class twitter(Thread,listener):
         self._alive = Event()
     
     def process_msg(self,json): 
+        '''Transform Twitter response(parameter:json) in protocol object'''
         if (json!= None):
             if("in_reply_to_status_id" in json):
                 json = js.loads(json)
@@ -32,6 +33,9 @@ class twitter(Thread,listener):
                 return twitter_object
     
     def send_comment(self, msg_obj):
+        '''post comment in a status
+        paramers: msg_obj= object of protocol class
+        status - msg_obj '''
         self._api.update_status("@"+msg_obj.username+" "+ msg_obj.text,in_reply_to_status_id=msg_obj.id)
     
     def send_direct_message(self,text, id_receiver):

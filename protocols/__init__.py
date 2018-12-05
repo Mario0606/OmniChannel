@@ -32,9 +32,10 @@ auth = OAuthHandler(ckey, csecret)
 auth.set_access_token(atoken, asecret)
 #data of Facebook access
 page_token = text['facebook']['page_token']
- #data of Skype access
-username = text['skype']['username']
-password = text['skype']['password']
+
+#data of Skype access
+usernameS = text['skype']['username']
+passwordS = text['skype']['password']
 
 #data of Instagram access
 usernameI = text['instagram']['username']
@@ -48,15 +49,15 @@ qaux_I = Queue()
 
 
 '''Flask Routes '''
-#@app.route('/twitter', methods=['GET','POST'])
-#def webhook_twitter():
-#    if request.method == 'POST':
-#        try:
-#            data = json.loads(request.data.decode())
-#            print(data)
-#            return '200'
-#        except:
-#            print(traceback.format_exc())
+@app.route('/twitter', methods=['GET','POST'])
+def webhook_twitter():
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.data.decode())
+            print(data)
+            return '200'
+        except:
+            print(traceback.format_exc())
 
 @app.route('/gmail', methods=['GET', 'POST'])
 def webhook_gmail():
@@ -116,7 +117,7 @@ if __name__=='__main__':
     gmail1 = gmail() 
     instagram1 = instagram(usernameI,passwordI)
     console1 = console()
-    skype1 = skype(username,password)
+    skype1 = skype(usernameS,passwordS)
 
     console1._oqueue_t, twitter1._oqueue = twitter1._iqueue, console1._iqueue
     console1._oqueue_f, facebook1._oqueue = facebook1._iqueue, console1._iqueue
