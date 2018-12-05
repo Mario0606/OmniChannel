@@ -15,7 +15,7 @@ class console(Thread):
         self._alive = Event()
 
     def process(self, msg):
-        print(msg.plataform,"",msg.username,msg.text)
+        print(msg.plataform,msg.username,msg.text)
         text = input()
         if(msg.plataform == "Facebook"):
             pattern_object = protocol("Facebook",msg.type,msg.id,msg.username,text,"")

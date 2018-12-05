@@ -39,7 +39,7 @@ class instagram(Thread):
         self._client.post_comment(msg_obj.id,msg_obj.text)
     
     def run(self):
-        self._client = self.auth(self._credentials[0],self._credentials[1])
+        #self._client = self.auth(self._credentials[0],self._credentials[1])
         self._alive.set()
         while self._alive:
             sleep(2)

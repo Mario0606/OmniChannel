@@ -7,8 +7,11 @@ class SkypePing(SkypeEventLoop):
         self._queue = Queue()
 
     def onEvent(self, event):
-        if isinstance(event, SkypeNewMessageEvent):
-            self._queue.put(event)
-        #if isinstance(event, SkypeChatUpdateEvent):
-        #    print(event)
+        #print(event)
+        if isinstance(event, SkypeNewMessageEvent)and not event.msg.userId == self.userId:
+            print(event.msg.chat.user)
+            user_name = event.msg.chat.user.name
+            chatId = event.msg.chat.user.id
+            text = event.msg.content
+            self._queue.put((chatId, user_name, text))
         
