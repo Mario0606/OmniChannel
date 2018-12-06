@@ -36,6 +36,7 @@ asecret = text['twitter']['asecret']
 webhook_url = text['twitter']['url']
 env_name = text['twitter']['env_name']
 myid_twitter = text['twitter']['current_id'] 
+webhook_tupla = (env_name,webhook_url)
 
 auth = OAuthHandler(ckey, csecret)
 auth.set_access_token(atoken, asecret)
@@ -172,7 +173,7 @@ def auth_facebook():
 
 if __name__=='__main__':
     
-    twitter1 = twitter(auth,twitterapi,env_name,webhook_url)
+    twitter1 = twitter(auth, webhook_tupla)
     #facebook1 = facebook(page_token)
     #gmail1 = gmail() 
     #instagram1 = instagram(usernameI,passwordI)

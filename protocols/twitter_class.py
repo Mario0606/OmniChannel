@@ -12,17 +12,14 @@ import requests
 from time import sleep
 
 class twitter(Thread):
-    def __init__(self,auth,request,app_envname,webhook_url):
+    def __init__(self,auth,webhook_tupla):
         super().__init__()
-        self._webhookUrl = webhook_url
-        self._request = request
+        self._webhook_tupla = webhook_tupla       
         self._auth = auth
         self._api = API(auth)
-        self._env_name = app_envname
         self._iqueue = Queue()
         self._oqueue = None
         self._qaux = None
-        self._qaux = Queue()
         self._alive = Event()
    
     def webhook(self):
@@ -37,8 +34,8 @@ class twitter(Thread):
                         self._auth.consumer_secret,
                         self._auth.access_token,
                         self._auth.access_token_secret)
-            create_webhook_twitter(api,self._env_name,self._webhookUrl)
-            subscribe_webhook(api,self._env_name)
+            create_webhook_twitter(api,self._webhook_tupla[0],self._webhook_tupla[1])
+            subscribe_webhook(api,self._webhook_tupla[1])
 
 
     def process_msg(self,dict1): 
@@ -53,6 +50,7 @@ class twitter(Thread):
                 status_reference = self._api.get_status(Id)
                 status_reference = status_reference._json["text"]
                 twitter_object = protocol("Twitter","Comment",Id,username,text,status_reference) 
+            
             elif("target" in dict1):
                 text = dict1['message_data']['text']
                 Id = dict1['sender_id']
